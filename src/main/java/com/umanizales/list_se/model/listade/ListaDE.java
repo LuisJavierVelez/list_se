@@ -2,8 +2,8 @@ package com.umanizales.list_se.model.listade;
 
 
 
+import com.umanizales.list_se.model.*;
 import com.umanizales.list_se.exception.ListaDeException;
-import com.umanizales.list_se.model.Boy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -683,8 +683,8 @@ public class ListaDE {
             /**
              * decimos que la varible boy es igual a los datos que contien la clase boy
              */
-            boy = new Boy(temp.getData().getIdentification(),temp.getData().getName(),temp.getData().getAge(),
-                    temp.getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());
+           /* boy = new Boy(temp.getData().getIdentification(),temp.getData().getName(),temp.getData().getAge(),
+                    temp.getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());*/
 
             /**
              * Llamamos a un ayudante temporal y le indicamos que es igual a un nuevo nodo o niño
@@ -729,8 +729,8 @@ public class ListaDE {
         /**
          * decimos que la varible boy es igual a los datos que contien la clase boy
          */
-        boy = new Boy(temp.getNext().getData().getIdentification(),temp.getNext().getData().getName(),temp.getNext().getData().getAge(),
-                temp.getNext().getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());
+        /*boy = new Boy(temp.getNext().getData().getIdentification(),temp.getNext().getData().getName(),temp.getNext().getData().getAge(),
+                temp.getNext().getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());*/
         /**
          * invocamos el metodo eliminar niño con los datos que obtuvo el temporal con la identificacion
          */
@@ -869,7 +869,7 @@ public class ListaDE {
 
     /**
      * Metedo encargado de intercarlos los niños por genero
-     * @throws ListaSeException Genera una respuesta al tener una excepcion sobre el proseso del metodo
+     * @throws ListaDeException Genera una respuesta al tener una excepcion sobre el proseso del metodo
      */
 
     public void variantBoysDe() throws ListaDeException {
@@ -1095,7 +1095,7 @@ public class ListaDE {
     /**
      * Metedoto que se encarga de borra el niño o niños dependiendo la edad ingresadao o solicitada
      * @param age parametro que carga la edad de los niños creados en la lista
-     * @throws ListaSeException Genera una respuesta al tener una excepcion sobre el proseso del metodo
+     * @throws ListaDeException Genera una respuesta al tener una excepcion sobre el proseso del metodo
      */
     public void DeleteBoyByAgeDe(byte age) throws ListaDeException {
         /**
@@ -1193,7 +1193,7 @@ public class ListaDE {
     /**
      * Metodo que elimina el niño dependiendo la posicion indicada
      * @param position numero de posicion que se indica en el cual esta el niño a eliminar
-     * @throws ListaSeException Genera una respuesta al tener una excepcion sobre el proseso del metodo
+     * @throws ListaDeException Genera una respuesta al tener una excepcion sobre el proseso del metodo
      */
     public void DeleteBoyPositionDe(int position) throws ListaDeException{
         /**
@@ -1390,6 +1390,189 @@ public class ListaDE {
          * retornamos el contador con la cantidad
          */
         return count;
+
     }
+
+    public GendersByGradeDTO gendersByGradeByLocation(byte grade, Location location) throws ListaDeException{
+
+         validateListEmptyDe();
+         List<CountByGenderDTO> countByGenderDTOS = new ArrayList<>();
+         int countTotal = 0;
+         int countM = 0;
+         int countF = 0;
+         Node temp = this.head1;
+         while (temp != null)
+             {
+                 if(temp.getData().getLocation().getCode().equals(location.getCode())&&temp.getData().getGrade()
+                 == grade);
+                 {
+                     countTotal++;
+                     if(temp.getData().isOrphans());{
+                         if(temp.getData().getGender().equals("2")){
+                             countM++;
+
+                         }else {
+                             countF++;
+                         }
+                     }
+                 }
+                 temp = temp.getNext();
+             }
+             countByGenderDTOS.add(new CountByGenderDTO("2", countM));
+             countByGenderDTOS.add(new CountByGenderDTO("1", countF));
+
+             GendersByGradeDTO genderByGradeDTO = new GendersByGradeDTO(grade, countByGenderDTOS, count);
+
+             return genderByGradeDTO;
+
+    }
+
+    public GradesByLocationDTO getGradesByLocation(Location location) throws ListaDeException
+    {
+        List<GendersByGradeDTO> gendersByGradeDTOS = new ArrayList<>();
+        for(byte i = 1; i <= 5; i++){
+            gendersByGradeDTOS.add(gendersByGradeByLocation(i, location));
+        }
+        GradesByLocationDTO gradesByLocationDTO = new GradesByLocationDTO(location,gendersByGradeDTOS);
+        return gradesByLocationDTO;
+    }
+
+    /**
+     * Metodo que adiciona un niño a la lista
+     * @param nodeInt
+     */
+    public void addNode(Node nodeInt)
+    {
+        /**
+         * Validamos que la lista tenga informacion
+         */
+        if(this.head1 == null)
+        {
+            /**
+             * Indicamos que la cabeza es el nuevo nodo ingresado
+             */
+            this.head1 = nodeInt;
+        }
+        else{
+            /**
+             * llamamos a un ayudante temporal y lo ubicamos en la cabeza
+             */
+            Node temp = head1;
+            /**
+             * Recorremos la lista indicandele que el siguiente del temporal sea diferente a nulo
+             */
+            while(temp.getNext() != null)
+            {
+                /**
+                 *  el ayudante temporal esta ubicado al final de la lista
+                 */
+                temp=temp.getNext();
+
+            }
+            /**
+             * El ayudante tempora obtiene los datos nodo
+             */
+            temp.setNext(nodeInt);
+            /**
+             *El nuevo Nodo agarre a su anterior
+             */
+            nodeInt.getPrevious(temp);
+        }
+
+    }
+
+    /**
+     * Metodo encargado de recibir la ubicacion del nodo
+     * @param location
+     * @return
+     * @throws ListaDeException
+     */
+    public ListaDE listaDELocations(Location location) throws ListaDeException
+    {
+        /**
+         * Creamos una lista temporal con los datos de la clase listaDE
+         */
+        ListaDE lisTemp = new ListaDE();
+        /**
+         * Llamamos a un ayudante temporal y lo ubicamos en la cabeza
+         */
+        Node temp = this.head1;
+
+        /**
+         * Recorremos la lista indicandole que sea diferente a null
+         */
+        while(temp != null)
+        {
+            /**
+             * Preguntamos si el dato del ayudante temporal sea igual a la ubicacion indicada
+             */
+            if(temp.getData().getLocation().equals(location))
+            {
+                /**
+                 * agregamos el nodo a lista Temporal
+                 */
+                lisTemp.addDe(temp.getData());
+
+            }
+            /**
+             * le indicamos al ayudante temporal que se ubique en su siguiente
+             */
+            temp = temp.getNext();
+        }
+        /**
+         * Retornamos la lista temporal.
+         */
+        return lisTemp;
+    }
+
+    public RhByGradesDTO getGradesRhDTOByGrades(byte grade)throws ListaDeException{
+        validateListEmptyDe();
+        Node temp = this.head1;
+        String rh = " ";
+        int count = 0;
+        while (temp != null){
+            if(temp.getData().getGrade() == grade) {
+                if (!rh.contains(temp.getData().getRh())) {
+                    rh = rh + ", " + temp.getData().getRh();
+                }
+                count++;
+            }
+            temp = temp.getNext();
+        }
+        return new RhByGradesDTO(grade,rh,count);
+    }
+
+    public GradesByGenderDTO getGradesByGenderDTO(Gender gender) throws ListaDeException
+    {
+        validateListEmptyDe();
+        RhByGradesDTO[] rhByGradesDTO = new RhByGradesDTO[5];
+
+        for(byte i = 0; i<= 5; i++){
+
+            rhByGradesDTO[i]= getGradesRhDTOByGrades((byte)(i+1));
+        }
+        return new GradesByGenderDTO(gender,rhByGradesDTO);
+
+
+    }
+    public GenderByLocationDTO getGenderByLocation(Location location) throws ListaDeException{
+        validateListEmptyDe();
+        List<GradesByGenderDTO> gradesByGenderDTO = new ArrayList<>();
+        int count = 0;
+        Node temp = head1;
+        while(temp != null)
+        {
+            if(temp.getData().getLocation().getCode().equals(location))
+            {
+                gradesByGenderDTO.add(getGradesByGenderDTO(temp.getData().getGender()));
+                count ++;
+            }
+            temp = temp.getNext();
+        }
+        GenderByLocationDTO genderByLocationDTO = new GenderByLocationDTO(location,gradesByGenderDTO, count);
+        return genderByLocationDTO;
+    }
+
+
 
 }

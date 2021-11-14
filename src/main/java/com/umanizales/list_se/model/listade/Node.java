@@ -12,4 +12,7 @@ public class Node {
     public Node(Boy data) {
         this.data = data;
     }
+
+    public void getPrevious(Node temp) {
+    }
 }

@@ -17,6 +17,7 @@ public class ListDeService {
     private ListaDE listBoys;
     private List<Location> locations;
     private List<Gender> genders;
+    private Object head1;
 
     public ListDeService(){
         listBoys = new ListaDE();
@@ -28,6 +29,9 @@ public class ListDeService {
         locations = new ArrayList<>();
         locations.add(new Location("16917001","Manizales"));
         locations.add(new Location("16917003","Chinchina"));
+        locations.add(new Location("16917004","Villamaria"));
+        locations.add(new Location("16917005","Neira"));
+
     }
     public void initializeGenders()
     {
@@ -223,4 +227,75 @@ public class ListDeService {
         return new ResponseEntity<>(new ResponseDTO("SatisFactori",boysByGender,null),HttpStatus.OK);
 
     }
+    public ResponseEntity<ResponseDTO>  gendersByGradeByLocation() throws ListaDeException
+    {
+        List<GenderByLocationDTO> genderByLocationDTOS = new ArrayList<>();
+        for (Location loc: locations)
+        {
+            genderByLocationDTOS.add(listBoys.getGenderByLocation(loc));
+        }
+
+        return new ResponseEntity<>(new ResponseDTO("Satisfactorio", genderByLocationDTOS, null), HttpStatus.OK);
+    }
+
+    /**
+     * Cargamos la respuesta del servicio
+     * @return retronamos la lista temporal
+     * @throws ListaDeException
+     */
+    public ResponseEntity<ResponseDTO> orderlocation() throws ListaDeException {
+        /**
+         * creamos una lista temportal con la datos de la lista doblemente enlazada
+         */
+        ListaDE listTemp = new ListaDE();
+        /**
+         * Recorremos la lista por ubicacion ingresada
+         */
+        for(Location loc: locations)
+        {
+            /**
+             * Creamos uan lista donde ingresamos la informacion nodo
+             */
+            ListaDE lisloc = this.listBoys.listaDELocations(loc);
+            /**
+             * indico que la lista temporal de ubicacion es la cabeza sea diferente a null
+             */
+            if(lisloc.getHead1()!= null)
+
+            {
+                /**
+                 * Le indico a lista temporal que agarre la cabeza
+                 */
+                listTemp.addNode(lisloc.getHead1());
+            }
+        }
+        /**
+         * Retornamos la lista temporal.
+         */
+        return new ResponseEntity<>(
+                new ResponseDTO("Satisfactorio", listTemp.listDe(), null),
+                HttpStatus.OK);
+    }
+    public ResponseEntity<ResponseDTO>  getGenderByLocation() throws ListaDeException
+    {
+        List<GenderByLocationDTO> genderByLocationDTOS = new ArrayList<>();
+        for (Location loc: locations)
+        {
+            genderByLocationDTOS.add(listBoys.getGenderByLocation(loc));
+        }
+
+        return new ResponseEntity<>(new ResponseDTO("Satisfactorio", genderByLocationDTOS, null), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ResponseDTO>  getOrphansByGradeByLocation() throws ListaDeException
+    {
+        List<GradesByLocationDTO> gradeByLocationDTOS = new ArrayList<>();
+        for (Location loc: locations)
+        {
+            gradeByLocationDTOS.add(listBoys.getGradesByLocation(loc));
+        }
+
+        return new ResponseEntity<>(new ResponseDTO("Satisfactorio", gradeByLocationDTOS, null), HttpStatus.OK);
+    }
 }
+

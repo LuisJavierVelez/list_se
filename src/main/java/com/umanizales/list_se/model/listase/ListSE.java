@@ -651,8 +651,8 @@ public class ListSE {
             /**
              * decimos que la varible boy es igual a los datos que contien la clase boy
              */
-            boy = new Boy(temp.getData().getIdentification(),temp.getData().getName(),temp.getData().getAge(),
-                    temp.getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());
+            /*boy = new Boy(temp.getData().getIdentification(),temp.getData().getName(),temp.getData().getAge(),
+                    temp.getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());*/
 
             /**
              * Llamamos a un ayudante temporal y le indicamos que es igual a un nuevo nodo o niño
@@ -697,8 +697,8 @@ public class ListSE {
         /**
          * decimos que la varible boy es igual a los datos que contien la clase boy
          */
-        boy = new Boy(temp.getNext().getData().getIdentification(),temp.getNext().getData().getName(),temp.getNext().getData().getAge(),
-                temp.getNext().getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());
+        /*boy = new Boy(temp.getNext().getData().getIdentification(),temp.getNext().getData().getName(),temp.getNext().getData().getAge(),
+                temp.getNext().getData().getGender(),temp.getData().getLocation(),temp.getData().getDegree());*/
         /**
          * invocamos el metodo eliminar niño con los datos que obtuvo el temporal con la identificacion
          */
@@ -1374,6 +1374,8 @@ public class ListSE {
          */
         return count;
     }
+
+
 
 
 

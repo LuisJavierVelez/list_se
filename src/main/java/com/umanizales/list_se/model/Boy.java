@@ -36,6 +36,13 @@ public class Boy {
     private Location location;
     @NotNull
     private Degree degree;
+    @NotNull
+    private boolean orphans;
+    @NotNull
+    @Size(min =1 ,max=5)
+    private byte grade;
+    @NotNull
+    private String rh;
 
 
 }

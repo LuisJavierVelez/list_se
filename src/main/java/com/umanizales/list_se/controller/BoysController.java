@@ -273,4 +273,15 @@ public class BoysController {
         return listDeService.getBoysByGenderDe();
     }
 
+    @GetMapping(path = "orderLocation")
+    public ResponseEntity<ResponseDTO> orderLocation() throws ListaDeException
+    { return listDeService.orderlocation();}
+
+    public ResponseEntity<ResponseDTO> boysByGenderorphanDe() throws ListaDeException
+    {return listDeService.getOrphansByGradeByLocation();}
+
+
+    @GetMapping(path = "boysbygenderlocation")
+    public ResponseEntity<ResponseDTO> getGenderByLocation() throws ListaDeException
+    {return listDeService.getGenderByLocation();}
 }
