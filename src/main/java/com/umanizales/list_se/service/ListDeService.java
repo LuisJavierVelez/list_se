@@ -28,9 +28,9 @@ public class ListDeService {
     {
         locations = new ArrayList<>();
         locations.add(new Location("16917001","Manizales"));
-        locations.add(new Location("16917003","Chinchina"));
-        locations.add(new Location("16917004","Villamaria"));
-        locations.add(new Location("16917005","Neira"));
+        locations.add(new Location("16917002","Chinchina"));
+        locations.add(new Location("16917003","Villamaria"));
+        locations.add(new Location("16917004","Neira"));
 
     }
     public void initializeGenders()
@@ -78,9 +78,9 @@ public class ListDeService {
         listBoys.addToStartDe(boy);
         return new ResponseEntity<>(new ResponseDTO("Niño adicionado", true, null),
                 HttpStatus.OK);
-    }
+    }*/
 
-    public static ResponseEntity<ResponseDTO> listBoysDe()throws ListaDeException {
+    public ResponseEntity<ResponseDTO> listBoysDe()throws ListaDeException {
 
         if(listBoys.getHead1()== null)
         {
@@ -90,7 +90,7 @@ public class ListDeService {
                 new ResponseDTO("Satisfactorio", listBoys.getHead1(), null),
                 HttpStatus.OK);
 
-    }*/
+    }
 
     public ResponseEntity<ResponseDTO> listBoysFreesDe() throws ListaDeException {
         return new ResponseEntity<>(
@@ -296,6 +296,11 @@ public class ListDeService {
         }
 
         return new ResponseEntity<>(new ResponseDTO("Satisfactorio", gradeByLocationDTOS, null), HttpStatus.OK);
+    }
+    public ResponseEntity<ResponseDTO> getOrderBoyAndGirl()throws ListaDeException{
+        listBoys.getOrderBoyAndGirl();
+        return new ResponseEntity<>(new ResponseDTO("Satisfactorio",listBoysFreesDe(), null), HttpStatus.OK);
+
     }
 }
 

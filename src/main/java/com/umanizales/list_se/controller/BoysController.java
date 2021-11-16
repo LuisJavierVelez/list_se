@@ -156,7 +156,7 @@ public class BoysController {
 
     /////////////////////////////Lista DE ///////////////////////////////////////
 
-    @PostMapping(path = "addboysde")
+    @PostMapping(path = "addboyde")
     public ResponseEntity<ResponseDTO> AddBoysDe(@RequestBody @Valid Boy boy)throws ListaDeException{
         return listDeService.addBoyDe(boy);
     }
@@ -201,7 +201,7 @@ public class BoysController {
         {
             listDeService.addBoyDe(boy);
         }
-        return new ResponseEntity<ResponseDTO>(new ResponseDTO("Satisfactorio",listDeService.listBoysFreesDe(), null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDTO("Satisfactorio",listDeService.listBoysDe(), null), HttpStatus.OK);
     }
 
     @GetMapping(path="getcountde")
@@ -284,4 +284,10 @@ public class BoysController {
     @GetMapping(path = "boysbygenderlocation")
     public ResponseEntity<ResponseDTO> getGenderByLocation() throws ListaDeException
     {return listDeService.getGenderByLocation();}
+
+    @GetMapping(path = "getorderboyandgirl")
+    public ResponseEntity<ResponseDTO> getOrderBoyAndGirl()throws ListaDeException{
+        return listDeService.getOrderBoyAndGirl();
+    }
+
 }

@@ -1393,47 +1393,123 @@ public class ListaDE {
 
     }
 
+    /**
+     * Metodo que cuenta los generos de los niños por grado y locacion y los almacena en una lista.
+     * @param grade 1 - 2 -3 - 4 - 5
+     * @param location Manizales - Chinchina - Villamaria - Neira
+     * @return  el conteo del  grado y el genero de del niño
+     * @throws ListaDeException
+     */
     public GendersByGradeDTO gendersByGradeByLocation(byte grade, Location location) throws ListaDeException{
-
+        /**
+         * Validamos que la lista tenga datos
+         *
+         */
          validateListEmptyDe();
-         List<CountByGenderDTO> countByGenderDTOS = new ArrayList<>();
+        /**
+         * Creamos Arreglo de lista que cuenta los generos
+         */
+        List<CountByGenderDTO> countByGenderDTOS = new ArrayList<>();
+        /**
+         * creamos  3 contadores y los incializamos desde 0
+         */
          int countTotal = 0;
          int countM = 0;
          int countF = 0;
-         Node temp = this.head1;
+        /**
+         * Llamamos a un ayudante temporal y lo ubicamos en la cabeza
+         */
+        Node temp = this.head1;
+        /**
+         * Recorremos la lista con el ayudante temporal hasta que los datos sean diferentea a nulos
+         */
          while (temp != null)
              {
+                 /**
+                  * indicamos si en el dato que se encuentra es igual a la localidad y grado es igual al indicado
+                  */
                  if(temp.getData().getLocation().getCode().equals(location.getCode())&&temp.getData().getGrade()
                  == grade);
                  {
+                     /**
+                      * Se incrementa el contador total dependiendo la respuesta
+                      */
                      countTotal++;
+                     /**
+                      * Validamos si el niño es hurfano
+                      */
                      if(temp.getData().isOrphans());{
-                         if(temp.getData().getGender().equals("2")){
+                     /**
+                      * Si el niño es hurfano validamos si al genero que pertenece es femenino
+                      */
+                     if(temp.getData().getGender().equals("2")){
+                         /**
+                          * Si el niño es de genero Masculino se cuenta en el contador Masculino
+                          */
                              countM++;
 
                          }else {
+                         /**
+                          * Si el niño es de genero Femeniño se cuenta en el contarod Femenino
+                          */
                              countF++;
                          }
                      }
                  }
+                 /**
+                  * El ayudante temporal se ubica en el siguiente niño del cual esta ubicado
+                  */
                  temp = temp.getNext();
              }
-             countByGenderDTOS.add(new CountByGenderDTO("2", countM));
-             countByGenderDTOS.add(new CountByGenderDTO("1", countF));
+        /**
+         * Generamos una estructura de la lista con la respuesta DTO, donde se envia el tipo de genero y su respectivo contador
+         */
+        countByGenderDTOS.add(new CountByGenderDTO("2", countM));
+        countByGenderDTOS.add(new CountByGenderDTO("1", countF));
 
-             GendersByGradeDTO genderByGradeDTO = new GendersByGradeDTO(grade, countByGenderDTOS, count);
+        /**
+         * Creamos una estructura con la lista de respuesta a nuestra linea donde se muestra el grado, luego el genero con la cantidad
+         * de niños y por ultimo el conteo por niños sin importar el genero.
+         */
 
-             return genderByGradeDTO;
+        GendersByGradeDTO genderByGradeDTO = new GendersByGradeDTO(grade, countByGenderDTOS, count);
+
+        /**
+         * Se retorna la respuesta a la estructura
+         */
+        return genderByGradeDTO;
 
     }
 
+    /**
+     * Metodo encargado de recorrer la lista y nos indica la localizacion y el grado
+     * @param location  parametros de localizacion Manizales - Chinchina - Villamaria - Neira
+     * @return Retornamos la estructura de la lista.
+     * @throws ListaDeException
+     */
     public GradesByLocationDTO getGradesByLocation(Location location) throws ListaDeException
     {
+        /**
+         * Creamos una arreglo de la lista DTO con los genero de los niños
+         */
         List<GendersByGradeDTO> gendersByGradeDTOS = new ArrayList<>();
-        for(byte i = 1; i <= 5; i++){
+        /**
+         * Recorremos los grados inicializando la variable i desde 0  hasta 5 que son la cantidad de grados registrados
+         */
+        for(byte i = 0; i < 5; i++){
+            /**
+             * Agregamos cada grado con su numero y localizacion
+             */
             gendersByGradeDTOS.add(gendersByGradeByLocation(i, location));
         }
+        /**
+         * Creamos una estructura el cual muestra el primer municipio y la estructura que se realizo con el genero por grado
+         */
         GradesByLocationDTO gradesByLocationDTO = new GradesByLocationDTO(location,gendersByGradeDTOS);
+
+        /**
+         * Retornamos la respuesta con la estructura indicada
+         */
         return gradesByLocationDTO;
     }
 
@@ -1525,53 +1601,191 @@ public class ListaDE {
         return lisTemp;
     }
 
+    /**
+     * Metodo creado para obtener el RH por medio del grado ingresado inluyendo en la tabla el genero
+     * @param grade 1 - 2 - 3 - 4 - 5
+     * @return se retorna el grado, el rh y contador.
+     * @throws ListaDeException
+     */
+
     public RhByGradesDTO getGradesRhDTOByGrades(byte grade)throws ListaDeException{
+        /**
+         * Validamos que la lista tenga datos
+         */
         validateListEmptyDe();
+        /**
+         * llamamos un ayudante temporal y lo ubicamos en la cabeza
+         */
         Node temp = this.head1;
+        /**
+         * Creamos una variable de nombre rh de tipo string vacia para capturar el tipo de sangre del niño
+         */
         String rh = " ";
+        /**
+         * Iniciamos una variable contador, inicializandola desde 0;
+         */
         int count = 0;
+        /**
+         * Recorremos la lista con el ayudante temporal
+         */
         while (temp != null){
+            /**
+             * Validamos si el grado del niño es igual al grado indicado, si el codigo del genero del niño tambien es igual al indicado
+             */
             if(temp.getData().getGrade() == grade) {
+                /**
+                 * Validamos si el rh es diferente al indicado
+                 */
                 if (!rh.contains(temp.getData().getRh())) {
+                    /**
+                     * Ubicamos cada un de los rh y los separa por coma
+                     */
                     rh = rh + ", " + temp.getData().getRh();
                 }
+                /**
+                 * Se cuenta el rh en la variable contador
+                 */
                 count++;
             }
+            /**
+             * Le indicamos al ayudante temporal que se ubique en el siguiente dato
+             */
             temp = temp.getNext();
         }
+        /**
+         * Retornamos la respuesta DTO con los datos del niño como el grado , rh y la variable contador
+         */
         return new RhByGradesDTO(grade,rh,count);
     }
 
-    public GradesByGenderDTO getGradesByGenderDTO(Gender gender) throws ListaDeException
+    /**
+     * Metodo encargado de optener los grados por genero
+     * @param gender MASCULINO - FEMENINO
+     * @return Retornamos la repuesta DTO con la estructura de la lista.
+     * @throws ListaDeException
+     */
+     public GradesByGenderDTO getGradesByGenderDTO(Gender gender) throws ListaDeException
     {
+        /**
+         * Validamos que lista tenga datos
+         */
         validateListEmptyDe();
+        /**
+         * Generamos un arreglo donde se indica el tamñano de lista
+         */
         RhByGradesDTO[] rhByGradesDTO = new RhByGradesDTO[5];
 
-        for(byte i = 0; i<= 5; i++){
+        /**
+         * Recorremos los grados inicializando la variable i desde 0  hasta 5 que son la cantidad de grados registrados
+         */
+        for(byte i = 0; i< 5; i++){
+            /**
+             * En cada posicion recorrida ubicamos el grado y el genero al que pertenece
+             */
 
             rhByGradesDTO[i]= getGradesRhDTOByGrades((byte)(i+1));
         }
+        /**
+         * Retornamos la respueta DTO, con el genero y la estructura del arreglo.
+         */
         return new GradesByGenderDTO(gender,rhByGradesDTO);
 
 
     }
+
+    /**
+     * Metodo que se encarga de organizar los generos por localizacion
+     * @param location Manizales - Chincina - Villamaria - Neira
+     * @return Retornamos la respueta de tipo DTO
+     * @throws ListaDeException
+     */
     public GenderByLocationDTO getGenderByLocation(Location location) throws ListaDeException{
+        /**
+         * Validamos que la lista tenga datos
+         */
         validateListEmptyDe();
+        /**
+         * Creamos un Arreglo de lista de grado por genero
+         */
         List<GradesByGenderDTO> gradesByGenderDTO = new ArrayList<>();
+        /**
+         * Iniciamos desde 0 una varible contador
+         */
         int count = 0;
+        /**
+         * llamamos a un ayudante temporal y lo ubicamos en la cabez
+         */
         Node temp = head1;
+        /**
+         * Recorremos la lista con el ayudante temporal
+         */
         while(temp != null)
         {
-            if(temp.getData().getLocation().getCode().equals(location))
+            /**
+             * validamos con el ayudante temporarl si en el niño donde se encuntra ubicado es igual a dato indicado
+             */
+            if(temp.getData().getLocation().getCode().equals(location.getCode()))
             {
+                /**
+                 * Agregramos los datos del genero del niño con los tados indicados por el ayudante temporal
+                 */
                 gradesByGenderDTO.add(getGradesByGenderDTO(temp.getData().getGender()));
+                /**
+                 * se incremental la variable contador con la localizacion indicada
+                 */
                 count ++;
             }
+            /**
+             * Le indicamos al ayudante temporal que se ubique en el siguiente dato donde esta ubicado
+             */
             temp = temp.getNext();
         }
+        /**
+         * creamos la estructura, en la cual tendra la localizacion, luego el genero con sus grados
+         * y sus rh, luego tendremos el contador que nos dara la cantidad en la localizacion
+         */
         GenderByLocationDTO genderByLocationDTO = new GenderByLocationDTO(location,gradesByGenderDTO, count);
+        /**
+         * retornaremos ya la estructura completa
+         */
         return genderByLocationDTO;
     }
+    /**
+     * Método  que ordena lso niños por orden de niñas y niños del primero al ultimo por ingresar.
+     *
+     * @throws ListaDeException
+     */
+
+    public void getOrderBoyAndGirl() throws ListaDeException {
+        /**
+         * llamamos un ayudante temporal que nos recorre la lista y le indicamos que se ubique en la cabez de la lista
+         */
+        Node temp = this.head1;
+        /**
+         * Luego iniciamos una lista temporal donde vamos a adicionar los niños en el orden propuesto.
+         */
+        ListaDE listTempB = new ListaDE();
+        /**
+         * Recorremos la lista con el ayudante temporal de principio a fin
+         */
+        while (temp != null) {
+
+            if (temp.getData().getGender().equals("2")) {
+                listTempB.addToStartDe(temp.getData());
+            } else {
+                listTempB.addDe(temp.getData());
+            }
+            /**
+             * Le deciemos al ayudante temporal que se pare en el siguiente niño del que esta ubicado.
+             */
+            temp = temp.getNext();
+        }
+        /**
+         * Reemplazamos la lista nueva en la cabeza
+         */
+        this.head1 = listTempB.getHead1();
+    }
+
 
 
 
